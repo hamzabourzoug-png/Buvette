@@ -95,9 +95,6 @@
           <i class="fa-solid fa-store"></i>
           <span>لوحة المقصف</span>
         </button>
-        <button onclick="resetDemoImmediately()" title="تصفير والبدء من #1" class="mr-1 px-2.5 py-2 rounded-xl text-xs font-bold text-slate-400 hover:text-amber-400 hover:bg-slate-800 transition flex items-center justify-center">
-          <i class="fa-solid fa-rotate-right"></i>
-        </button>
       </nav>
     </div>
   </header>
@@ -367,14 +364,14 @@
           أدخل رمز الدخول الخاص بإدارة المقصف لاستعراض الطلبات الواردة وتجهيزها.
         </p>
         <form onsubmit="unlockStaffDashboard(event)" class="space-y-4">
-          <input type="password" id="staff-pin-input" maxlength="6" placeholder="أدخل الرمز السري (1234)"
+          <input type="password" id="staff-pin-input" maxlength="6" placeholder="أدخل الرمز السري للإدارة"
             class="w-full text-center tracking-[0.5em] text-xl font-bold bg-slate-900 border border-slate-700 focus:border-amber-500 rounded-xl py-3 px-4 text-white outline-none">
           <button type="submit" class="w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-sm transition shadow-lg shadow-amber-500/20">
             دخول إلى لوحة الطلبات
           </button>
         </form>
-        <div class="mt-4 inline-block px-3 py-1.5 rounded-lg bg-slate-800/80 text-xs text-slate-300 border border-slate-700">
-          <i class="fa-solid fa-key text-amber-400 ml-1"></i> الرمز الافتراضي للإدارة: <strong class="text-amber-400 font-mono">1234</strong>
+        <div class="mt-4 inline-block px-3 py-1.5 rounded-lg bg-slate-800/80 text-xs text-slate-400 border border-slate-700">
+          <i class="fa-solid fa-shield-halved text-amber-400 ml-1"></i> دخول مخصص لصاحب المقصف والمسؤول فقط
         </div>
       </div>
 
@@ -1048,10 +1045,12 @@
     // =========================================================================
     // 5. STAFF DASHBOARD & ORDER PROCESSING
     // =========================================================================
+    const ADMIN_SECRET_PIN = '2026';
+
     function unlockStaffDashboard(e) {
       e.preventDefault();
       const pin = document.getElementById('staff-pin-input').value.trim();
-      if (pin === '1234') {
+      if (pin === ADMIN_SECRET_PIN) {
         isStaffUnlocked = true;
         sessionStorage.setItem(STORAGE_KEYS.STAFF_UNLOCKED, 'true');
         document.getElementById('staff-pin-input').value = '';
@@ -1060,7 +1059,7 @@
         renderStaffOrders();
         showToast('تم فتح لوحة تحكم المقصف بنجاح', 'success');
       } else {
-        showToast('الرمز السري غير صحيح. جرب الرمز 1234', 'error');
+        showToast('الرمز السري غير صحيح! هذه المنطقة مخصصة للإدارة فقط.', 'error');
       }
     }
 
